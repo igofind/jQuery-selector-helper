@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+    "name": "jQuery Selector Helper",
+    "version": "1.0.6",
+
+    "description": "jQuery(CSS)选择器助手，通过与chrome devTools中Elements面板结合，快捷生成选择器。",
+    "icons": {
+        "128": "icon128.png"
+    },
+
+    "browser_action": {
+        "default_icon": "icon128.png",
+        "default_title": "",
+        "default_popup": "popup.html"
+    },
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+
+    "devtools_page": "devtools.html",
+
+    "permissions": [
+        "*://*/*",
+        "clipboardWrite",
+        "tabs",
+        "activeTab"
+    ]
+}

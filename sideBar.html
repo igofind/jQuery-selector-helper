@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>extensionSideBar</title>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .bar {
+            width: 100%;
+            padding: 4px 0;
+            display: inline-block;
+        }
+
+        .bar-bottom-line {
+            border-top: 0;
+            border-right: 0;
+            border-left: 0;
+            margin: 0;
+            border-bottom: 1px solid #bdbdbd;
+        }
+
+        .content {
+            padding: 0 4px 0 4px;
+        }
+
+        .content ul {
+            margin: 0;
+            list-style: none;
+            -webkit-padding-start: 0;
+        }
+
+        .content span {
+            border: 1px solid #d5d5d5;
+            display: inline-block;
+            background-color: #ECE7E7;
+            text-align: center;
+            padding: 2px;
+            margin: 2px;
+            max-height: 20px;
+            min-width: 30px;
+            max-width: 100px;
+            cursor: default;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        /*id|class|attr*/
+        .content span.overflow-hide {
+            vertical-align: bottom;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        .content span.isCheck {
+            background-color: white;
+        }
+
+        /*the attribute line is Not displayed by default*/
+        [class^=tag-line-attr-] {
+            display: none;
+        }
+
+        [class^=tag-line-attr-].show {
+            display: block;
+        }
+
+        ul.noAttr {
+            margin-left: 12px;
+        }
+
+        li.show {
+            /*margin-left: 24px;*/
+            margin-left: 30px;
+        }
+
+        li.show > span {
+            overflow: hidden;
+            border-style: dashed;
+        }
+
+        .fa {
+            width: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .bar > .fa {
+            width: 20px;
+            margin: 0 0 0 8px;
+            font-size: 14px;
+            color: #505050;
+        }
+
+        .fa.fa-toggle-on {
+            color: #d80000;
+        }
+
+        .result {
+            padding: 8px 0 8px 18px;
+        }
+
+        .result span {
+            display: none;
+            line-height: 22px;
+        }
+
+        .result span.active {
+            display: initial;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .click-to-edit, .selector-num-label {
+            line-height: 23px;
+        }
+
+        .click-to-edit{
+            cursor: pointer;
+        }
+
+        .result span.alert {
+            color: red;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .result .calc-container .fa {
+            width: 14px;
+            margin: 5px 8px 8px 0;
+            font-size: 14px;
+            color: #505050;
+        }
+
+        .calc-container {
+            display: none;
+            margin-left: 46px;
+        }
+
+        .calc-container span {
+            display: inline-block;
+            text-align: center;
+            padding: 1px;
+            margin: 2px 4px 2px 0;
+            font-family: monospace;
+            font-size: 12px;
+            width: 63px;
+            overflow: hidden;
+            height: 20px;
+            border: 1px solid #d5d5d5;
+            background-color: #ECE7E7;
+            cursor: default;
+        }
+
+        .calc-container .line {
+            width: 470px;
+            margin-bottom: 10px;
+            /*min-height: 35px;*/
+        }
+
+        .operate-container span{
+            border-style: dashed;
+        }
+
+        .operate-container span.selected{
+            background-color: white;
+            border-style: solid;
+        }
+        .line span.click{
+            cursor: pointer;
+        }
+        .line span.selected{
+            background-color: white;
+        }
+        .line.simple-method span{
+            width: 77px;
+        }
+        .line span.lg-width{
+            padding-left: 0;
+            width: 64px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+<div class="bar">
+    <i class="item-location-auto fa fa-toggle-off" title="auto locate"></i>
+    <i class="item-location fa fa-map-marker" title="locate"></i>
+    <i class="item-location-all fa fa-th-large" title="mark"></i>
+    <i class="item-location-clear fa fa-eraser" title="clear all cover layers"></i>
+    <i class="item-copy fa fa-clipboard" title="copy to clipboard"></i>
+    <!--<i class="item-mark-links fa fa-list-ul" title="mark all visibel links"></i>-->
+    <i class="item-load-jq fa fa-file-code-o" title="inject jQuery" style="float: right;margin-right: 10px"></i>
+</div>
+<hr class="bar-bottom-line">
+<div class="result">
+    <label class="selector-num-label">length：</label><span class="selector-num active">0</span> <br/>
+    <label class="click-to-edit" title="click to edit">selector：</label><span class="selector active">none</span> <span
+        class="alert"></span> <br/>
+    <div class="calc-container"></div>
+</div>
+<br/>
+<div class="content"></div>
+<script src="Helper.js"></script>
+<script src="sideBar.js"></script>
+</body>
+</html>

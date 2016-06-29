@@ -1,43 +1,26 @@
 var
-    _debug = false, // debug mode, control the debug message output or not
-// _debug = true, // debug mode, control the debug message output or not
+    /**
+     * 自动定位开关
+     * @type {boolean}
+     */
+    autoLocateSwitch = false,
 
-    config = {
-        mark: true,
-        autoLocate: false,
-        clear: true,
-        color: 'red',
-        debug: _debug,
-        toStr: function () {
-            var str = "{";
-            for (var p in config) {
-                var value = '';
-                if (config.hasOwnProperty(p) && p != 'toStr') {
-                    switch (typeof config[p]) {
-                        case 'string':
-                            value = "\'" + config[p] + "\'";
-                            break;
-                        case 'boolean':
-                        default:
-                            value = config[p];
-                            break;
-                    }
-                    str = str + p + ":" + value + ', ';
-                }
-            }
-            str = str.trim().replace(/\,$/, '}');
-            return str;
-        }
-    },
-
-    modelArrGlobal,
+    modalArrGlobal,
 
     selectChange,
 
-    selectorGlobal; // for user-defined selector
+    selectorGlobal,// 用户自定义selector时使用
+
+    /**
+     * 调试开关
+     * @type {boolean}
+     * @private
+     */
+        //_debug = true; // _debug && console.debug();
+    _debug = false;
 
 /**
- * add/remove the selection-change event listener
+ * 为改变选中的元素添加/删除事件监听器
  * @param toAdd {boolean}
  */
 function toggleSelectionListener(toAdd) {
@@ -48,85 +31,92 @@ function toggleSelectionListener(toAdd) {
     }
 }
 
-// defined Tag object
-inspectEval("Tag = null; " + Tag.toStr());
-
 /**
  * onSelectionChanged listener
  */
 function selectionChangedListener() {
-    inspectEval("(function(config){return new Tag(null, config);})(" + config.toStr() + ")", function (result) {
-        _debug && console.log("selection changed.");
 
-        selectorGlobal = result.selector;
+    inspectEval(evalstr, function (result) {
+        if (!result) {
+            return;
+        }
 
-        modelArrGlobal = result["modelArray"].reverse();
+        _debug && console.debug(result);
 
         var content = document.getElementsByClassName("content")[0];
 
-        // clear the old content.
+        modalArrGlobal = result["modal"];
+
+        // 清空上次结果
         clearContent(content);
 
-        // show the selector
+        selectorGlobal = result["selector"];
+
+        // 输出结果
         setResult(selectorGlobal, true);
 
-        // create the dom structure
-        createTagModal(modelArrGlobal, content);
+        createTagModal(modalArrGlobal, content);
 
-        // resize the result window
+        // 调整窗口
         resize();
+
+        // 高亮(有色层遮盖)选中的元素
+        inspectEval("(" + coverToEle.toString() + "($0, true))");
+
+        // 自动定位到当前选中元素
+        autoLocateSwitch && inspectEval("(" + scrollToTag + "())");
     });
 }
 
 /**
- * create the model(similar to a dom model)
- * @param modelArr {Array}
+ * 创建元素模型
+ * @param modalArr {Array}
  * @param content {Element}
  */
-function createTagModal(modelArr, content) {
+function createTagModal(modalArr, content) {
 
-    if (!isNotEmpty(modelArr)) {
+    if (!isNotEmpty(modalArr)) {
         return;
     }
 
-    for (var i = 0; i < modelArr.length; i++) {
+    for (var i = 0; i < modalArr.length; i++) {
 
-        content.appendChild(createTagLine(modelArr, i));
+        content.appendChild(createTagLine(modalArr, i));
     }
 }
 
 /**
- * create a line that contains a tag's dom info.
- * @param modelArr {Array}
- * @param modelArrIndex {number}
+ * 创建给定元素信息的行
+ * @param modalArr {Array}
+ * @param modalArrIndex {number}
  * @returns {Element}
  */
-function createTagLine(modelArr, modelArrIndex) {
+function createTagLine(modalArr, modalArrIndex) {
     var
-        model = modelArr[modelArrIndex],
+        modal = modalArr[modalArrIndex],
 
-        _modelIndex = 0,
-        _model = model[_modelIndex],
+        _modalIndex = 0,
+        _modal = modal[_modalIndex],
 
-        _modelAttrIndex = 1,
-        _modelArr = model[_modelAttrIndex],
+        _modalAttrIndex = 1,
+        _modalArr = modal[_modalAttrIndex],
 
-        clazz = "tag-line-" + modelArrIndex,
-        attrLineClass = "tag-line-attr-" + modelArrIndex,
+        clazz = "tag-line-" + modalArrIndex,
+        attrLineClass = "tag-line-attr-" + modalArrIndex,
         ul = document.createElement("ul"),
         li = document.createElement("li");
 
     ul.classList.add(clazz);
 
-    for (var i = 0; i < _model.length; i++) {
-        _model[i] && li.appendChild(createPiece(_model[i], i, _modelIndex, modelArrIndex));
+    for (var i = 0; i < _modal.length; i++) {
+        li.appendChild(createPiece(_modal[i], i, _modalIndex, modalArrIndex));
     }
 
     ul.appendChild(li);
 
-    if (_modelArr) {
+    if (_modalArr) {
 
-        ul.appendChild(createTagAttr(_modelArr, attrLineClass, 1, modelArrIndex));
+        ul.appendChild(createTagAttr(_modalArr, attrLineClass, 1, modalArrIndex));
         ul.classList.add("hasAttr");
         ul.firstChild.insertBefore(createActionTag(attrLineClass), ul.firstChild.firstChild);
     } else {
@@ -138,36 +128,37 @@ function createTagLine(modelArr, modelArrIndex) {
 }
 
 /**
- * create tag's attributes.
+ *
+ * 创建元素附属属性
  * @param attrs {Array}
  * @param clazz {string}
  * @returns {Element}
- * @param modelIndex {index}
- * @param modelArrIndex {index}
+ * @param modalIndex {index}
+ * @param modalArrIndex {index}
  * @returns {Element}
  */
-function createTagAttr(attrs, clazz, modelIndex, modelArrIndex) {
+function createTagAttr(attrs, clazz, modalIndex, modalArrIndex) {
 
     var li = document.createElement("li");
     li.classList.add(clazz);
 
     for (var i = 0; i < attrs.length; i++) {
 
-        attrs[i] && li.appendChild(createPiece(attrs[i], i, modelIndex, modelArrIndex));
+        attrs[i] && li.appendChild(createPiece(attrs[i], i, modalIndex, modalArrIndex));
     }
 
     return li;
 }
 
 /**
- * create a model item's part.
+ * 创建一个tag属性的span标签
  * @param item {string}
  * @param spanIndex {number}
- * @param modelIndex {number}
- * @param modelArrIndex {number}
+ * @param modalIndex {number}
+ * @param modalArrIndex {number}
  * @returns {Element}
  */
-function createPiece(item, spanIndex, modelIndex, modelArrIndex) {
+function createPiece(item, spanIndex, modalIndex, modalArrIndex) {
     var
         clazz = "",
         clazz2 = "item-" + spanIndex,
@@ -198,14 +189,14 @@ function createPiece(item, spanIndex, modelIndex, modelArrIndex) {
     }
 
     // 自定义selector时用
-    span.dataset.index = [modelArrIndex, modelIndex, spanIndex];
+    span.dataset.index = [modalArrIndex, modalIndex, spanIndex];
 
     span.addEventListener("mousedown", pieceListener.bind(span));
     return span;
 }
 
 /**
- * create expand/collapse tag.
+ * 创建展开/折叠标签
  * @param target {string}
  * @returns {Element}
  */
@@ -224,7 +215,7 @@ function createActionTag(target) {
     return tag;
 
     /**
-     * expand/collapsing event handler
+     * 展开/折叠事件
      */
     function actionListener() {
 
@@ -247,7 +238,7 @@ function createActionTag(target) {
 }
 
 /**
- * clear the content
+ * 清空html元素的内容
  * @param element {Element}
  */
 function clearContent(element) {
@@ -255,7 +246,7 @@ function clearContent(element) {
 }
 
 /**
- * show the selector
+ * 设置结果
  * @param selector {string}
  * @param toCopy {boolean}
  */
@@ -322,7 +313,7 @@ function setResult(selector, toCopy) {
 }
 
 /**
- * span {tagName, tagId, tagClass} click event handler
+ * span {tagName, tagId, tagClass} click(左单击) 事件监听器
  */
 function pieceListener(event) {
     if (event['which'] == 1) {
@@ -335,9 +326,9 @@ function pieceListener(event) {
 
         _debug && console.debug(isCheck);
 
-        modelArrGlobal[index[0]][index[1]][index[2]]["check"] = !isCheck;
+        modalArrGlobal[index[0]][index[1]][index[2]]["check"] = !isCheck;
 
-        selectorGlobal = modelToSelector();
+        selectorGlobal = modalToSelector();
 
         setResult(selectorGlobal, false);
     } else if (event['which'] == 3) {
@@ -361,10 +352,10 @@ function pieceListener(event) {
 }
 
 /**
- * turn model into selector
+ * modal 到 selector 的转换
  * @returns {string}
  */
-function modelToSelector() {
+function modalToSelector() {
     var
         indexCache = -1,
 
@@ -372,19 +363,19 @@ function modelToSelector() {
 
     selectChange = true;
 
-    for (var i = 0; i < modelArrGlobal.length; i++) {
+    for (var i = 0; i < modalArrGlobal.length; i++) {
 
         var
             sibling = "", // 相邻元素
             subSelector = "",
-            model = modelArrGlobal[i],
-            modelItem = model[0], // model[0]: [tagName-object,id-object,class-object,class-object,...]
-            attrs = model[1],// tag的属性
+            modal = modalArrGlobal[i],
+            modalItem = modal[0], // modal[0]: [tagName-object,id-object,class-object,class-object,...]
+            attrs = modal[1],// tag的属性
             numStartClass = false;
 
-        for (var j = 0; j < modelItem.length; j++) {
-            var itemObject = modelItem[j];
-            if (itemObject && itemObject["check"]) {
+        for (var j = 0; j < modalItem.length; j++) {
+            var itemObject = modalItem[j];
+            if (itemObject["check"]) {
 
                 if (/\.\d/.test(itemObject['value'])) {
                     numStartClass = true;
@@ -449,20 +440,20 @@ function modelToSelector() {
     return selector;
 }
 
-// /****************************************toolbar*******************************************/
+// /****************************************nav bar*******************************************/
 var
     /**
-     * toolbar item's class
+     * bar item's class
      * @type {string[]}
      */
     barItems = [
-        "item-location", "item-location-auto", "item-location-all", "item-location-clear", "item-copy",
+        "item-location", "item-location-auto", "item-location-all", "item-location-clear", "item-copy", "item-hide",
         //"item-mark-links",
         "item-load-jq"
     ],
 
     /**
-     * the toolbar
+     * the tool bar
      * @type {Element}
      */
     bar = document.getElementsByClassName("bar")[0];
@@ -485,9 +476,13 @@ for (var i = 0; i < barItems.length; i++) {
         case "item-location-all":
             clickListener = markAll;
             break;
-        // clear all cover layers
+        // clear all mark
         case "item-location-clear":
             clickListener = unMarkAll;
+            break;
+        // hide tag
+        case "item-hide":
+            clickListener = hideTag;
             break;
         // copy result to clipboard
         case "item-copy":
@@ -505,7 +500,7 @@ for (var i = 0; i < barItems.length; i++) {
     item.addEventListener("click", clickListener.bind(item));
 }
 
-// Calculation jQuery expression
+// jQuery计算器
 var
     clickTag = document.querySelector(".click-to-edit"),
     calcContainer = document.querySelector(".calc-container");
@@ -513,10 +508,17 @@ var
 clickTag.addEventListener("click", calc.bind(calcContainer));
 
 /**
- * scroll the selected element into the view.
+ * 定位当前选中的元素(点击后)
  */
 function locate() {
-    inspectEval("$tag.locate(null , true)");
+    if (selectChange) {
+        inspectEval("inspect(document.querySelector('" + selectorGlobal + "'))", function () {
+            inspectEval("(" + scrollToTag + "())");
+            selectChange = false;
+        });
+    } else {
+        inspectEval("(" + scrollToTag + "())");
+    }
 }
 
 /**
@@ -532,12 +534,12 @@ function autoLocate() {
     if (clazzs.contains(switchOff)) {
         this.classList.remove(switchOff);
         this.classList.add(switchOn);
-        config.autoLocate = true;
     } else if (clazzs.contains(switchOn)) {
         this.classList.remove(switchOn);
         this.classList.add(switchOff);
-        config.autoLocate = false;
     }
+
+    autoLocateSwitch = !autoLocateSwitch;
 }
 
 /**
@@ -545,33 +547,93 @@ function autoLocate() {
  */
 function markAll() {
 
-    inspectEval("$tag != null", function (result, isException) {
-        if (!isException && result) {
-            inspectEval("$tag.cover(document.querySelectorAll('" + selectorGlobal + "'), true, true)", function (result,
-                                                                                                                 isExcept) {
-                _debug && console.log("markAll invoked, " + result + " elements were covered.");
-            });
+    inspectEval(
+        getTagLeft
+        + getTagTop
+        + scrollToTag
+        + coverToEle
+        + " (" + _markAll + ")('" + selectorGlobal + "')"
+    );
+
+    function _markAll(selector) {
+        //try { // 现已将id含有数字的转为了[id='sfa123']形式
+        // 优先使用原生dom api
+        var tags = document.querySelectorAll(selector);
+        //} catch (e) {
+        // #123-ss 类似这种有数字的id原生dom api会报错
+        //if (window['jQuery']) {
+        //    tags = jQuery(selector);
+        //}
+        //}
+
+        for (var i = 0; i < tags.length; i++) {
+            if (i == 0) {
+                coverToEle(tags[i], true, 0);
+            } else {
+                coverToEle(tags[i], false, i);
+            }
         }
-    });
+    }
 }
 
 /**
- * clear all cover layers
+ * 清除所有的标记
  */
 function unMarkAll() {
-    inspectEval("$tag != null", function (result) {
-        result && inspectEval("$tag.clearAllCover();", function (res, isEx) {
-            if (isEx) {
-                warn("清除失败！", 300);
-            } else {
-                warn("清除成功！", 300);
-            }
-        });
+    inspectEval("(" + _unMark + ")();", function (res, isEx) {
+        if (isEx) {
+            warn("清除失败！", 300);
+        } else {
+            warn("清除成功！", 300);
+        }
     });
+
+    function _unMark() {
+        var marks = document.querySelectorAll("div.-slct");
+        for (var i = 0; i < marks.length; i++) {
+            marks[i].remove();
+        }
+    }
 }
 
 /**
- * copy the result to the clipboard.
+ * 隐藏标签
+ */
+function hideTag() {
+
+    inspectEval("(" + _hideOrShowTag + ")('" + selectorGlobal + "')");
+
+    function _hideOrShowTag(selector) {
+        //try { // 现已将id含有数字的转为了[id='sfa123']形式
+        // 优先使用原生dom api
+        var
+            key = "hide",
+            tags = document.querySelectorAll(selector);
+        //} catch (e) {
+        // #123-ss 类似这种有数字的id原生dom api会报错
+        //if (window['jQuery']) {
+        //    tags = jQuery(selector);
+        //}
+        //}
+
+        for (var i = 0; i < tags.length; i++) {
+
+            var status = tags[i].dataset[key];
+
+            if (!status || status == 'false') {
+                tags[i].style.visibility = "hidden";
+                tags[i].dataset[key] = true;
+
+            } else {
+                tags[i].style.visibility = "visible";
+                tags[i].dataset[key] = false;
+            }
+        }
+    }
+}
+
+/**
+ * 拷贝jQuery表达式(包含selector)到剪切板
  * @param toWarn
  */
 function copyToClipboard(toWarn) {
@@ -601,7 +663,7 @@ function copyToClipboard(toWarn) {
 }
 
 /**
- * copy selector to the clipboard.
+ * 只拷贝selector到剪切板
  */
 function copySelectorToClip() {
     var
@@ -642,10 +704,23 @@ function copySelectorToClip() {
  * 对于overflow:hidden的(例如焦点图)查找其container
  */
 function markAllLinks() {
+    inspectEval("jQuery.fn.jquery", function (res, isEx) {
+        if (isEx) {
+            warn("该页面不支持jQuery！", 1000);
+        } else {
+            warn("TODO 此功能尚未完成！", 1000);
+        }
+    });
+
+    function searchLinks() {
+        var
+            visibleLinks = jQuery(document.links).filter("[href]:visible");
+    }
+
 }
 
 /**
- * inject the jQuery object.
+ * 给没有jq的页面中嵌入jq
  */
 function loadJQ() {
     inspectEval("jQuery.fn.jquery", function (result, isException) {
@@ -1641,11 +1716,10 @@ function calc() {
     }
 
 }
-
-// /*************************************Others**********************************************/
+// /*************************************其他**********************************************/
 
 /**
- * Interact with the current page.
+ * 注入交互script代码
  * @param evalStr
  * @param callback
  */
@@ -1653,6 +1727,9 @@ function inspectEval(evalStr, callback) {
     chrome.devtools.inspectedWindow.eval(
         evalStr,
         function () {
+
+            _debug && console.debug(arguments);
+
             if (typeof callback === "function") {
                 callback.apply(callback, arguments);
             }
@@ -1661,14 +1738,14 @@ function inspectEval(evalStr, callback) {
 }
 
 /**
- * resize the result page.
+ * 改变窗口高度
  */
 function resize() {
     window.postMessage("resize-side-pane", "*");
 }
 
 /**
- * Delayed show some messages.
+ * nav bar 结果提示
  */
 function warn(msg, time) {
     var
@@ -1705,56 +1782,4 @@ function $extends(from, to) {
         }
     }
     return to;
-}
-
-/**
- * 判断给定对象是否为空
- * @param obj {object}
- * @returns {boolean}
- */
-function isNotEmpty(obj) {
-    var
-        result = true,
-        type = typeof obj;
-
-    switch (type) {
-        case "undefined":
-            result = false;
-            break;
-        case "object":
-            result = isNotEmptyO(obj);
-            break;
-        case "string":
-            result = obj.trim().length > 0;
-            break;
-        default:
-            var isArr = Array.isArray(obj);
-            if (isArr) {
-                result = isArr.length > 0;
-            } else {
-                // number/boolean return true
-            }
-            break;
-    }
-
-    return result;
-}
-
-/**
- * 判断对象是否为空
- * @param obj {object}
- * @returns {boolean}
- */
-function isNotEmptyO(obj) {
-
-    if (typeof obj === "undefined" || obj === null) {
-        return false;
-    }
-
-    for (var p in obj) {
-        if (obj.hasOwnProperty(p)) {
-            return true;
-        }
-    }
-    return false;
 }

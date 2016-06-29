@@ -49,7 +49,7 @@
             text-overflow: ellipsis;
         }
 
-        /*id|class|attr*/
+        /*id|class|attr值过长时hide*/
         .content span.overflow-hide {
             vertical-align: bottom;
             overflow-x: hidden;
@@ -60,7 +60,7 @@
             background-color: white;
         }
 
-        /*the attribute line is Not displayed by default*/
+        /*attr默认不显示*/
         [class^=tag-line-attr-] {
             display: none;
         }
@@ -189,24 +189,25 @@
 </head>
 <body>
 <div class="bar">
-    <i class="item-location-auto fa fa-toggle-off" title="auto locate"></i>
-    <i class="item-location fa fa-map-marker" title="locate"></i>
-    <i class="item-location-all fa fa-th-large" title="mark"></i>
-    <i class="item-location-clear fa fa-eraser" title="clear all cover layers"></i>
-    <i class="item-copy fa fa-clipboard" title="copy to clipboard"></i>
-    <!--<i class="item-mark-links fa fa-list-ul" title="mark all visibel links"></i>-->
-    <i class="item-load-jq fa fa-file-code-o" title="inject jQuery" style="float: right;margin-right: 10px"></i>
+    <i class="item-location-auto fa fa-toggle-off" title="自动定位"></i>
+    <i class="item-location fa fa-map-marker" title="定位"></i>
+    <i class="item-location-all fa fa-th-large" title="标记所有"></i>
+    <i class="item-location-clear fa fa-eraser" title="清除所有标记"></i>
+    <i class="item-copy fa fa-clipboard" title="拷贝到剪切板"></i>
+    <i class="item-hide fa fa-eye" title="隐藏(显示)元素"></i>
+    <!--<i class="item-mark-links fa fa-list-ul" title="标记所有可见链接"></i>-->
+    <i class="item-load-jq fa fa-file-code-o" title="嵌入jQuery" style="float: right;margin-right: 10px"></i>
 </div>
 <hr class="bar-bottom-line">
 <div class="result">
-    <label class="selector-num-label">length：</label><span class="selector-num active">0</span> <br/>
-    <label class="click-to-edit" title="click to edit">selector：</label><span class="selector active">none</span> <span
+    <label class="selector-num-label">元素数：</label><span class="selector-num active">0</span> <br/>
+    <label class="click-to-edit" title="点击进行编辑">选择器：</label><span class="selector active">无</span> <span
         class="alert"></span> <br/>
     <div class="calc-container"></div>
 </div>
 <br/>
 <div class="content"></div>
-<script src="Helper.js"></script>
+<script src="evalstr.js"></script>
 <script src="sideBar.js"></script>
 </body>
 </html>

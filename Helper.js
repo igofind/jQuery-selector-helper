@@ -595,7 +595,7 @@ Tag.prototype = {
             if (/\.\d/.test(item)) {
                 item = '[class="' + item.split(".").join(' ').trim() + '"]';
             }
-            var num = document.querySelector(item);
+            var num = document.querySelectorAll(item).length;
             if (num == 1) { // 当前class只能查出一个
                 result = item;
                 break;

@@ -48,14 +48,29 @@ function toggleSelectionListener(toAdd) {
     }
 }
 
-// defined Tag object
-inspectEval("Tag = null; " + Tag.toStr());
+// Inject the Tag object into current page after selector side pane was created.
+injectTag();
+
+/**
+ * Inject Tag object.
+ */
+function injectTag() {
+    //
+    inspectEval("typeof Tag", function (result) {
+        if(result == 'undefined'){
+            inspectEval("Tag = null; " + Tag.toStr());
+        }
+    });
+}
 
 /**
  * onSelectionChanged listener
  */
 function selectionChangedListener() {
-    inspectEval("(function(config){return new Tag(null, config);})(" + config.toStr() + ")", function (result) {
+    injectTag();
+
+    inspectEval("(function(config){var tag = new Tag(null, config); return {selector: tag.selector, modelArray:" +
+        " tag.modelArray}})(" + config.toStr() + ")", function (result) {
         _debug && console.log("selection changed.");
 
         selectorGlobal = result.selector;
@@ -296,7 +311,7 @@ function setResult(selector, toCopy) {
             toCopy && copyToClipboard(_debug);
 
             // 要先拷贝后再提示(由于提示时会隐藏结果标签，复制不成功)
-            toWarn && warn(toWarn, 300);
+            toWarn && warn(toWarn, 1500);
 
             inspectEval("document.querySelectorAll('" + selector + "').length", function (res, ex) {
 

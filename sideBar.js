@@ -267,15 +267,15 @@ function setResult(selector, toCopy) {
         calcContainer = document.querySelector(".calc-container"),
         numSpan = document.querySelector(".selector-num");
 
-    selectorSpan.title = '单击可以只拷贝选择器';
-    selectorSpan.style.cursor = 'default';
+    selectorSpan.title = getI18nMsg("copy_selector_only");
+    selectorSpan.style.cursor = 'pointer';
 
     selectorSpan.classList.add("active");
 
     selectorSpan.removeEventListener("click", copySelectorToClip);
     selectorSpan.addEventListener("click", copySelectorToClip);
 
-    // 隐藏jQuery计算器
+    // Hide the calculator panel.
     calcContainer.style.display = 'none';
 
     inspectEval(
@@ -284,7 +284,7 @@ function setResult(selector, toCopy) {
             var toWarn = "";
             if (isException) {
                 supportJQ = false;
-                toWarn = "该页面不支持jQuery!";
+                toWarn = getI18nMsg("tips_no_jq");
             } else {
 
                 _debug && console.debug("jQuery version " + result);
@@ -452,6 +452,7 @@ function modelToSelector() {
 // /****************************************toolbar*******************************************/
 document.querySelector(".label-elements-length").innerHTML = getI18nMsg("label_elements_length");
 document.querySelector(".label-jQuery-expression").innerHTML = getI18nMsg("label_jQuery_expression");
+document.querySelector(".label-jQuery-expression").title = getI18nMsg("label_jQuery_expression_click");
 document.querySelector(".selector").innerHTML = getI18nMsg("label_jQuery_expression_default");
 
 var
@@ -506,7 +507,6 @@ for (var i = 0; i < barItems.length; i++) {
     item.addEventListener("click", clickListener.bind(item));
 }
 
-// Calculation jQuery expression
 var
     clickTag = document.querySelector(".label-jQuery-expression"),
     calcContainer = document.querySelector(".calc-container");
@@ -521,7 +521,7 @@ function locate() {
 }
 
 /**
- * 自动定位当前选中的元素(可开关)
+ * Change the autoLocate switch.
  */
 function autoLocate() {
 
@@ -542,7 +542,7 @@ function autoLocate() {
 }
 
 /**
- * 标记所有当前选择器能查找到的元素
+ * Mark all the elements corresponding to the selector.
  */
 function markAll() {
 
@@ -557,7 +557,7 @@ function markAll() {
 }
 
 /**
- * clear all cover layers
+ * Clear all cover layers
  */
 function unMarkAll() {
     inspectEval("$tag != null", function (result) {
@@ -572,7 +572,7 @@ function unMarkAll() {
 }
 
 /**
- * copy the result to the clipboard.
+ * Copy the result to clipboard.
  * @param toWarn
  */
 function copyToClipboard(toWarn) {
@@ -602,7 +602,7 @@ function copyToClipboard(toWarn) {
 }
 
 /**
- * copy selector to the clipboard.
+ * Copy the selector to clipboard.
  */
 function copySelectorToClip() {
     var
@@ -646,57 +646,7 @@ function markAllLinks() {
 }
 
 /**
- * inject the jQuery object.
- */
-function loadJQ_old() {
-    inspectEval("jQuery.fn.jquery", function (result, isException) {
-
-        if (isException) { // The current page don't contains jQuery object.
-
-            // var jqSrc = "http://igofind.github.io/lib/plugins/jQuery/jquery-1.11.3.min.js";
-            var jqSrc = chrome.runtime.getURL("jquery-1.11.3.min.js");
-            console.log(jqSrc);
-            inspectEval("(" + _loadJQ + ")('" + jqSrc + "')", function (res, isEx) {
-                if (!isEx) {
-                    window.setTimeout(function () {
-                        inspectEval("jQuery.fn.jquery", function (r, ex) {
-                            if (!ex) {
-                                warn(getI18nMsg("tips_inject_jq_success", r), 2000);
-                            } else {
-                                warn(getI18nMsg("tips_can_not_inject_jq"), 2000);
-                            }
-                        })
-                    }, 1000);
-                } else {
-                    warn(getI18nMsg("tips_inject_jq_failed"));
-                }
-            })
-
-        } else {
-            warn(getI18nMsg("tips_exist_jq", result));
-        }
-    });
-
-    function _loadJQ(src) {
-        var script = document.createElement("script");
-        script.classList.add("load-jq");
-        script.src = src;
-        document.head.insertBefore(script, document.head.firstChild);
-
-        var timer = window.setInterval(function () {
-            if (window['jQuery']) {
-                // http://www.ikea.com/cn/zh/catalog/categories/series/19027/ 库冲突
-                // jQuery.noConflict(true);
-                jQuery.noConflict();
-                window.clearInterval(timer);
-                return jQuery.fn.jquery;
-            }
-        }, 100)
-    }
-}
-
-/**
- * inject the jQuery object.
+ * Inject the jQuery object.
  */
 function loadJQ() {
     inspectEval("jQuery.fn.jquery", function (result, isException) {
@@ -726,15 +676,14 @@ function loadJQ() {
 }
 
 /**
- * 根据输入的选择器来查找和标记所能找到元素
- * 注:要能够保存历史
+ * Calculation jQuery expression.
  */
 function calc() {
     var
         me = this,
         selector = document.querySelector(".selector");
 
-    //隐藏 .selector
+    // Hide results display area
     selector.classList.remove("active");
 
     me.style.display = 'block';
@@ -747,7 +696,7 @@ function calc() {
     window['_s_length'] = -1; // 被编辑选择器选中元素定位用的当前序号
 
     /**
-     * 创建查找工具栏
+     * Create the toolbar which belongs to the calculator panel.
      * <input type="text"><i class="fa fa-caret-left"></i><i class="fa fa-search"></i><i class="fa fa-caret-right"></i>
      */
     var
@@ -1692,7 +1641,7 @@ function inspectEval(evalStr, callback) {
 }
 
 /**
- * resize the result page.
+ * resize the result page(the side pane).
  */
 function resize() {
     window.postMessage("resize-side-pane", "*");
@@ -1700,6 +1649,8 @@ function resize() {
 
 /**
  * Delayed show some messages.
+ * @param msg
+ * @param time
  */
 function warn(msg, time) {
     var
@@ -1723,7 +1674,10 @@ function warn(msg, time) {
 }
 
 /**
- * 对象继承
+ * Object Inheritance
+ * @param from
+ * @param to
+ * @returns {*}
  */
 function $extends(from, to) {
 
@@ -1739,7 +1693,7 @@ function $extends(from, to) {
 }
 
 /**
- * 判断给定对象是否为空
+ * Detecting whether the object is empty
  * @param obj {object}
  * @returns {boolean}
  */
@@ -1772,7 +1726,7 @@ function isNotEmpty(obj) {
 }
 
 /**
- * 判断对象是否为空
+ * Detecting whether the object is empty
  * @param obj {object}
  * @returns {boolean}
  */

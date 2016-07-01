@@ -1,24 +1,30 @@
 {
     "label_elements_length": {
-        "message": "length"
+        "message": "Length"
     },
     "label_jQuery_expression": {
-        "message": "expression"
+        "message": "Expression"
     },
     "label_jQuery_expression_default": {
-        "message": "none"
+        "message": "None"
     },
+
+    "label_jQuery_expression_click": {
+        "message": "Click to show the calculator panel."
+    },
+
     "toolbar_tips_auto_locate": {
-        "message": "auto locate (scroll the selected element into view)"
+        "message": "Auto locate (Scroll the selected element into view.)"
     },
     "toolbar_tips_locate": {
-        "message": "locate (scroll the selected element into view)"
+        "message": "Locate (Scroll the selected element into view.)"
     },
     "toolbar_tips_mark": {
-        "message": "mark (create some cover layer to mark the target)"
+        "message": "Mark (Create some cover layer to mark the target.)"
     },
+
     "toolbar_tips_clear": {
-        "message": "clear (clear all cover layers)"
+        "message": "Clear (Clear all cover layers.)"
     },
     "clear_success": {
         "message": "Clear success!"
@@ -26,8 +32,12 @@
     "clear_failed": {
         "message": "Clear failed!"
     },
+
     "toolbar_tips_copy": {
-        "message": "Copy (copy the result to clipboard)"
+        "message": "Copy (Copy the result to clipboard.)"
+    },
+    "copy_selector_only": {
+        "message": "Click to copy selector only!"
     },
     "copy_success": {
         "message": "Copy success!"
@@ -38,11 +48,12 @@
     "copy_failed_exception": {
         "message": "Copy failed! The current version of chrome does not support this operation!"
     },
+
     "toolbar_tips_jq": {
-        "message": "inject jQuery object into the current page"
+        "message": "Inject jQuery object into the current page."
     },
     "tips_no_jq": {
-        "message": ""
+        "message": "No jQuery object in the current page."
     },
     "tips_exist_jq": {
         "message": "jQuery (v$VERSION$) already exists!",
@@ -61,9 +72,14 @@
         }
     },
     "tips_inject_jq_failed": {
-        "message": "injected failure!"
+        "message": "Injected failure!"
     },
     "tips_can_not_inject_jq": {
+        "message": "jQuery can not be injected into the current page!"
+    },
+
+//    Tips for the calculator panel
+    "calc_tips_alt_upOrDown": {
         "message": "jQuery can not be injected into the current page!"
     }
 }

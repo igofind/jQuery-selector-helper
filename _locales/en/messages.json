@@ -1,0 +1,69 @@
+{
+    "label_elements_length": {
+        "message": "length"
+    },
+    "label_jQuery_expression": {
+        "message": "expression"
+    },
+    "label_jQuery_expression_default": {
+        "message": "none"
+    },
+    "toolbar_tips_auto_locate": {
+        "message": "auto locate (scroll the selected element into view)"
+    },
+    "toolbar_tips_locate": {
+        "message": "locate (scroll the selected element into view)"
+    },
+    "toolbar_tips_mark": {
+        "message": "mark (create some cover layer to mark the target)"
+    },
+    "toolbar_tips_clear": {
+        "message": "clear (clear all cover layers)"
+    },
+    "clear_success": {
+        "message": "Clear success!"
+    },
+    "clear_failed": {
+        "message": "Clear failed!"
+    },
+    "toolbar_tips_copy": {
+        "message": "Copy (copy the result to clipboard)"
+    },
+    "copy_success": {
+        "message": "Copy success!"
+    },
+    "copy_failed": {
+        "message": "Copy failed!"
+    },
+    "copy_failed_exception": {
+        "message": "Copy failed! The current version of chrome does not support this operation!"
+    },
+    "toolbar_tips_jq": {
+        "message": "inject jQuery object into the current page"
+    },
+    "tips_no_jq": {
+        "message": ""
+    },
+    "tips_exist_jq": {
+        "message": "jQuery (v$VERSION$) already exists!",
+        "placeholders": {
+            "version" : {
+                "content" : "$1"
+            }
+        }
+    },
+    "tips_inject_jq_success": {
+        "message": "jQuery (v$VERSION$) injected success!",
+        "placeholders": {
+            "version" : {
+                "content" : "$1"
+            }
+        }
+    },
+    "tips_inject_jq_failed": {
+        "message": "injected failure!"
+    },
+    "tips_can_not_inject_jq": {
+        "message": "jQuery can not be injected into the current page!"
+    }
+}

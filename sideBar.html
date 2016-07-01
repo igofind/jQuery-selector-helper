@@ -10,7 +10,7 @@
             padding: 0;
         }
 
-        .bar {
+        .toolbar {
             width: 100%;
             padding: 4px 0;
             display: inline-block;
@@ -90,7 +90,7 @@
             text-align: center;
         }
 
-        .bar > .fa {
+        .toolbar > .fa {
             width: 20px;
             margin: 0 0 0 8px;
             font-size: 14px;
@@ -116,11 +116,11 @@
             font-size: 12px;
         }
 
-        .click-to-edit, .selector-num-label {
+        .label-jQuery-expression, .label-elements-length {
             line-height: 23px;
         }
 
-        .click-to-edit{
+        .label-jQuery-expression {
             cursor: pointer;
         }
 
@@ -188,24 +188,25 @@
     </style>
 </head>
 <body>
-<div class="bar">
-    <i class="item-location-auto fa fa-toggle-off" title="auto locate"></i>
-    <i class="item-location fa fa-map-marker" title="locate"></i>
-    <i class="item-location-all fa fa-th-large" title="mark"></i>
-    <i class="item-location-clear fa fa-eraser" title="clear all cover layers"></i>
-    <i class="item-copy fa fa-clipboard" title="copy to clipboard"></i>
+<div class="toolbar">
+    <i class="auto_locate fa fa-toggle-off" title="auto locate"></i>
+    <i class="locate fa fa-map-marker" title="locate"></i>
+    <i class="mark fa fa-th-large" title="mark"></i>
+    <i class="clear fa fa-eraser" title="clear all cover layers"></i>
+    <i class="copy fa fa-clipboard" title="copy to clipboard"></i>
     <!--<i class="item-mark-links fa fa-list-ul" title="mark all visibel links"></i>-->
-    <i class="item-load-jq fa fa-file-code-o" title="inject jQuery" style="float: right;margin-right: 10px"></i>
+    <i class="jq fa fa-file-code-o" title="inject jQuery" style="float: right;margin-right: 10px"></i>
 </div>
 <hr class="bar-bottom-line">
 <div class="result">
-    <label class="selector-num-label">length：</label><span class="selector-num active">0</span> <br/>
-    <label class="click-to-edit" title="click to edit">selector：</label><span class="selector active">none</span> <span
+    <label class="label-elements-length">length</label>：<span class="selector-num active">0</span> <br/>
+    <label class="label-jQuery-expression" title="click to edit">expression</label>：<span class="selector active"></span> <span
         class="alert"></span> <br/>
     <div class="calc-container"></div>
 </div>
 <br/>
 <div class="content"></div>
+<script src="jQuery-1.11.3-str.js"></script>
 <script src="Helper.js"></script>
 <script src="sideBar.js"></script>
 </body>

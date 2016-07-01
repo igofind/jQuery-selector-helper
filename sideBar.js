@@ -1,6 +1,6 @@
 var
-    _debug = false, // debug mode, control the debug message output or not
-// _debug = true, // debug mode, control the debug message output or not
+// _debug = false, // debug mode, control the debug message output or not
+    _debug = true, // debug mode, control the debug message output or not
 
     config = {
         mark: true,
@@ -450,53 +450,54 @@ function modelToSelector() {
 }
 
 // /****************************************toolbar*******************************************/
+document.querySelector(".label-elements-length").innerHTML = getI18nMsg("label_elements_length");
+document.querySelector(".label-jQuery-expression").innerHTML = getI18nMsg("label_jQuery_expression");
+document.querySelector(".selector").innerHTML = getI18nMsg("label_jQuery_expression_default");
+
 var
     /**
      * toolbar item's class
      * @type {string[]}
      */
-    barItems = [
-        "item-location", "item-location-auto", "item-location-all", "item-location-clear", "item-copy",
-        //"item-mark-links",
-        "item-load-jq"
-    ],
+    barItems = ["auto_locate", "locate", "mark", "clear", "copy", "jq"],
 
     /**
      * the toolbar
      * @type {Element}
      */
-    bar = document.getElementsByClassName("bar")[0];
+    bar = document.getElementsByClassName("toolbar")[0];
 
 for (var i = 0; i < barItems.length; i++) {
     var
         clickListener = null,
-        item = bar.querySelector("." + barItems[i]);
+        clazz = barItems[i],
+        prefix = "toolbar_tips_",
+        item = bar.querySelector("." + clazz);
 
-    switch (barItems[i]) {
+    item.title = getI18nMsg(prefix + clazz);
+
+    switch (clazz) {
         // location button
-        case "item-location":
-            clickListener = locate;
-            break;
-        // auto-location button
-        case "item-location-auto":
+        case barItems[0]:
             clickListener = autoLocate;
             break;
+        // auto-location button
+        case barItems[1]:
+            clickListener = locate;
+            break;
         // mark all tag
-        case "item-location-all":
+        case barItems[2]:
             clickListener = markAll;
             break;
         // clear all cover layers
-        case "item-location-clear":
+        case barItems[3]:
             clickListener = unMarkAll;
             break;
         // copy result to clipboard
-        case "item-copy":
+        case barItems[4]:
             clickListener = copyToClipboard;
             break;
-        //case "item-mark-links": // TODO
-        //    clickListener = markAllLinks;
-        //    break;
-        case "item-load-jq":
+        case barItems[5]:
             clickListener = loadJQ;
             break;
         default:
@@ -507,7 +508,7 @@ for (var i = 0; i < barItems.length; i++) {
 
 // Calculation jQuery expression
 var
-    clickTag = document.querySelector(".click-to-edit"),
+    clickTag = document.querySelector(".label-jQuery-expression"),
     calcContainer = document.querySelector(".calc-container");
 
 clickTag.addEventListener("click", calc.bind(calcContainer));
@@ -562,9 +563,9 @@ function unMarkAll() {
     inspectEval("$tag != null", function (result) {
         result && inspectEval("$tag.clearAllCover();", function (res, isEx) {
             if (isEx) {
-                warn("清除失败！", 300);
+                warn(getI18nMsg("clear_failed"), 300);
             } else {
-                warn("清除成功！", 300);
+                warn(getI18nMsg("clear_success"), 300);
             }
         });
     });
@@ -592,9 +593,9 @@ function copyToClipboard(toWarn) {
     }
 
     try {
-        msg = document.execCommand("copy") ? "拷贝成功!" : "拷贝失败!";
+        msg = document.execCommand("copy") ? getI18nMsg("copy_success") : getI18nMsg("copy_failed");
     } catch (err) {
-        msg = "拷贝失败，该chrome版本不支持此操作!";
+        msg = getI18nMsg('copy_failed_exception');
     }
     window.getSelection().removeAllRanges();
     toWarn && warn(msg, 300);
@@ -622,9 +623,9 @@ function copySelectorToClip() {
         window.getSelection().addRange(range);
 
         try {
-            msg = document.execCommand("copy") ? "拷贝成功!" : "拷贝失败!";
+            msg = document.execCommand("copy") ? getI18nMsg("copy_success") : getI18nMsg("copy_failed");
         } catch (err) {
-            msg = "拷贝失败，该chrome版本不支持此操作!";
+            msg = getI18nMsg('copy_failed_exception');
         }
         window.getSelection().removeAllRanges();
 
@@ -647,32 +648,32 @@ function markAllLinks() {
 /**
  * inject the jQuery object.
  */
-function loadJQ() {
+function loadJQ_old() {
     inspectEval("jQuery.fn.jquery", function (result, isException) {
 
-        if (isException) { // 页面中没有jq
+        if (isException) { // The current page don't contains jQuery object.
 
-            //var jqSrc = chrome.extension.getURL("jquery.min.js"); // TODO 行不通
-            var jqSrc = "https://g.alicdn.com/sj/lib/jquery.min.js";
-
+            // var jqSrc = "http://igofind.github.io/lib/plugins/jQuery/jquery-1.11.3.min.js";
+            var jqSrc = chrome.runtime.getURL("jquery-1.11.3.min.js");
+            console.log(jqSrc);
             inspectEval("(" + _loadJQ + ")('" + jqSrc + "')", function (res, isEx) {
                 if (!isEx) {
                     window.setTimeout(function () {
                         inspectEval("jQuery.fn.jquery", function (r, ex) {
                             if (!ex) {
-                                warn("jQuery " + r + " 嵌入成功！", 2000);
+                                warn(getI18nMsg("tips_inject_jq_success", r), 2000);
                             } else {
-                                warn("该页面中无法嵌入jQuery！", 2000);
+                                warn(getI18nMsg("tips_can_not_inject_jq"), 2000);
                             }
                         })
                     }, 1000);
                 } else {
-                    warn("嵌入jQuery失败！");
+                    warn(getI18nMsg("tips_inject_jq_failed"));
                 }
             })
 
         } else {
-            warn("此页面中已有 jQuery " + result + " ");
+            warn(getI18nMsg("tips_exist_jq", result));
         }
     });
 
@@ -692,6 +693,36 @@ function loadJQ() {
             }
         }, 100)
     }
+}
+
+/**
+ * inject the jQuery object.
+ */
+function loadJQ() {
+    inspectEval("jQuery.fn.jquery", function (result, isException) {
+
+        if (isException) { // The current page don't contains jQuery object.
+
+            inspectEval(jQString, function (res, isEx) {
+                if (!isEx) {
+                    window.setTimeout(function () {
+                        inspectEval("jQuery.fn.jquery", function (r, ex) {
+                            if (!ex) {
+                                warn(getI18nMsg("tips_inject_jq_success", r), 2000);
+                            } else {
+                                warn(getI18nMsg("tips_can_not_inject_jq"), 2000);
+                            }
+                        })
+                    }, 1000);
+                } else {
+                    warn(getI18nMsg("tips_inject_jq_failed"));
+                }
+            })
+
+        } else {
+            warn(getI18nMsg("tips_exist_jq", result));
+        }
+    });
 }
 
 /**
@@ -1757,4 +1788,13 @@ function isNotEmptyO(obj) {
         }
     }
     return false;
+}
+
+/**
+ * internationalization
+ * @param name
+ * @returns {*}
+ */
+function getI18nMsg(name) {
+    return chrome.i18n.getMessage.apply(this, arguments);
 }

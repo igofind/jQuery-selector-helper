@@ -2,6 +2,7 @@
     "manifest_version": 2,
     "name": "jQuery Selector Helper",
     "version": "1.0.6",
+    "default_locale": "en",
 
     "description": "jQuery(CSS)选择器助手，通过与chrome devTools中Elements面板结合，快捷生成选择器。",
     "icons": {

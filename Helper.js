@@ -225,15 +225,15 @@ Tag.prototype = {
             div.style.width = tag.getBoundingClientRect().width + "px";
             div.style.top = xy.y + "px";
             div.style.left = xy.x + "px";
-            var _tip = ' [' + tag.getBoundingClientRect().width + 'x' + tag.getBoundingClientRect().height + ']  ' +
+            var _tips = ' [' + tag.getBoundingClientRect().width + 'x' + tag.getBoundingClientRect().height + ']  ' +
                 'X: ' + xy.x +
                 ', Y: ' + xy.y;
 
             if (index != null) {
-                div.title = "[" + index + "] " + tag.nodeName + _tip;
+                div.title = "[" + index + "] " + tag.nodeName + _tips;
                 div.appendChild(this.tip4Cover("[" + index + "] " + tag.nodeName));
             } else {
-                div.title = tag.nodeName + _tip;
+                div.title = tag.nodeName + _tips;
                 div.appendChild(this.tip4Cover(tag.nodeName));
             }
         }
@@ -485,7 +485,7 @@ Tag.prototype = {
                     break;
             }
         }
-        return selector.trim();
+        return selector.trimRight ? selector.trimRight(): selector.trim();
     },
     siftModelSelector: function (model, lastSelector) {
 

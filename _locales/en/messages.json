@@ -80,6 +80,6 @@
 
 //    Tips for the calculator panel
     "calc_tips_alt_upOrDown": {
-        "message": "jQuery can not be injected into the current page!"
+        "message": ""
     }
 }

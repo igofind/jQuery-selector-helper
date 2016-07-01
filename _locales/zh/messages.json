@@ -4,5 +4,82 @@
     },
     "label_jQuery_expression": {
         "message": "表达式"
+    },
+    "label_jQuery_expression_default": {
+        "message": "无"
+    },
+
+    "label_jQuery_expression_click": {
+        "message": "点击后显示计算器页面板"
+    },
+
+    "toolbar_tips_auto_locate": {
+        "message": "自动定位 (使用Elements元素面板选择元素时，将被选中的元素滚动到当前窗口的可见区域)"
+    },
+    "toolbar_tips_locate": {
+        "message": "定位 (滚动被选中的元素到当前窗口的可见区域)"
+    },
+    "toolbar_tips_mark": {
+        "message": "标记 (创建遮层来标记被选中的或selector对应的元素)"
+    },
+
+    "toolbar_tips_clear": {
+        "message": "清除(所有)标记"
+    },
+    "clear_success": {
+        "message": "清除成功！"
+    },
+    "clear_failed": {
+        "message": "清除失败！"
+    },
+
+    "toolbar_tips_copy": {
+        "message": "拷贝 (jQuery表达式)"
+    },
+    "copy_selector_only": {
+        "message": "点击此处只拷贝选择器"
+    },
+    "copy_success": {
+        "message": "拷贝成功！"
+    },
+    "copy_failed": {
+        "message": "拷贝失败！"
+    },
+    "copy_failed_exception": {
+        "message": "拷贝失败！当前浏览器版本不支持此操作！"
+    },
+
+    "toolbar_tips_jq": {
+        "message": "向当前页面中注入jQuery"
+    },
+    "tips_no_jq": {
+        "message": "当前页面中没有jQuery对象！"
+    },
+    "tips_exist_jq": {
+        "message": "jQuery (v$VERSION$) 已存在！",
+        "placeholders": {
+            "version" : {
+                "content" : "$1"
+            }
+        }
+    },
+    "tips_inject_jq_success": {
+        "message": "jQuery (v$VERSION$) 注入成功！",
+        "placeholders": {
+            "version" : {
+                "content" : "$1"
+            }
+        }
+    },
+    "tips_inject_jq_failed": {
+        "message": "Injected failure!"
+    },
+    "tips_can_not_inject_jq": {
+        "message": "当前页面中无法注入jQuery！"
+    },
+
+    //    Tips for the calculator panel
+    "calc_tips_alt_upOrDown": {
+        "message": ""
     }
 }

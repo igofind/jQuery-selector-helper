@@ -2,6 +2,9 @@
     "label_elements_length": {
         "message": "Length"
     },
+    "elements_length_wrong": {
+        "message": "Length error!"
+    },
     "label_jQuery_expression": {
         "message": "Expression"
     },
@@ -58,16 +61,16 @@
     "tips_exist_jq": {
         "message": "jQuery (v$VERSION$) already exists!",
         "placeholders": {
-            "version" : {
-                "content" : "$1"
+            "version": {
+                "content": "$1"
             }
         }
     },
     "tips_inject_jq_success": {
         "message": "jQuery (v$VERSION$) injected success!",
         "placeholders": {
-            "version" : {
-                "content" : "$1"
+            "version": {
+                "content": "$1"
             }
         }
     },
@@ -78,8 +81,43 @@
         "message": "jQuery can not be injected into the current page!"
     },
 
-//    Tips for the calculator panel
+    //    Tips for the calculator panel
     "calc_tips_alt_upOrDown": {
-        "message": ""
+        "message": "Use alt + up/down to look up history."
+    },
+    "calc_tips_search": {
+        "message": "Click (or left-click the blank area) to search."
+    },
+    "calc_tips_prev_element": {
+        "message": "Show the prev tag in the result."
+    },
+    "calc_tips_next_element": {
+        "message": "Show the next tag in the result."
+    },
+    "calc_tips_eval_expression": {
+        "message": "Click (or right-click the blank area) to execute the expression."
+    },
+    "calc_tips_prev_history": {
+        "message": "The prev expression in the history."
+    },
+    "calc_tips_next_history": {
+        "message": "The next expression in the history."
+    },
+    "calc_tips_wrong_expression": {
+        "message": "Wrong expression!"
+    },
+    "calc_tips_search_success": {
+        "message": "Search success!"
+    },
+    "calc_tips_execute_success": {
+        "message": "Execute success!"
+    },
+    "calc_tips_event_triggered": {
+        "message": "$EVENTNAME$ event triggered success！",
+        "placeholders": {
+            "eventname": {
+                "content": "$1"
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 var
-// _debug = false, // debug mode, control the debug message output or not
-    _debug = true, // debug mode, control the debug message output or not
+    _debug = false, // debug mode, control the debug message output or not
+// _debug = true, // debug mode, control the debug message output or not
 
     config = {
         mark: true,
@@ -37,7 +37,7 @@ var
     selectorGlobal; // for user-defined selector
 
 /**
- * add/remove the selection-change event listener
+ * Add/Remove the selection-change event listener
  * @param toAdd {boolean}
  */
 function toggleSelectionListener(toAdd) {
@@ -57,7 +57,7 @@ injectTag();
 function injectTag() {
     //
     inspectEval("typeof Tag", function (result) {
-        if(result == 'undefined'){
+        if (result == 'undefined') {
             inspectEval("Tag = null; " + Tag.toStr());
         }
     });
@@ -94,7 +94,7 @@ function selectionChangedListener() {
 }
 
 /**
- * create the model(similar to a dom model)
+ * Create the model(similar to a dom model)
  * @param modelArr {Array}
  * @param content {Element}
  */
@@ -111,7 +111,7 @@ function createTagModal(modelArr, content) {
 }
 
 /**
- * create a line that contains a tag's dom info.
+ * Create a line that contains a tag's dom info.
  * @param modelArr {Array}
  * @param modelArrIndex {number}
  * @returns {Element}
@@ -153,7 +153,7 @@ function createTagLine(modelArr, modelArrIndex) {
 }
 
 /**
- * create tag's attributes.
+ * Create tag's attributes.
  * @param attrs {Array}
  * @param clazz {string}
  * @returns {Element}
@@ -175,7 +175,7 @@ function createTagAttr(attrs, clazz, modelIndex, modelArrIndex) {
 }
 
 /**
- * create a model item's part.
+ * Create a model item's part.
  * @param item {string}
  * @param spanIndex {number}
  * @param modelIndex {number}
@@ -212,7 +212,7 @@ function createPiece(item, spanIndex, modelIndex, modelArrIndex) {
         span.classList.add(overFlowHide);
     }
 
-    // 自定义selector时用
+    // Custom selector
     span.dataset.index = [modelArrIndex, modelIndex, spanIndex];
 
     span.addEventListener("mousedown", pieceListener.bind(span));
@@ -220,7 +220,7 @@ function createPiece(item, spanIndex, modelIndex, modelArrIndex) {
 }
 
 /**
- * create expand/collapse tag.
+ * Create expand/collapse tag.
  * @param target {string}
  * @returns {Element}
  */
@@ -239,7 +239,7 @@ function createActionTag(target) {
     return tag;
 
     /**
-     * expand/collapsing event handler
+     * Expand/Collapsing event handler
      */
     function actionListener() {
 
@@ -256,13 +256,13 @@ function createActionTag(target) {
         var targetTag = document.getElementsByClassName(this.getAttribute("target"))[0];
         targetTag.classList.toggle("show");
 
-        // 调整窗口高度
+        // Resize the side pane.
         resize();
     }
 }
 
 /**
- * clear the content
+ * Clear the content
  * @param element {Element}
  */
 function clearContent(element) {
@@ -270,7 +270,7 @@ function clearContent(element) {
 }
 
 /**
- * show the selector
+ * Show the selector
  * @param selector {string}
  * @param toCopy {boolean}
  */
@@ -307,22 +307,21 @@ function setResult(selector, toCopy) {
 
             selectorSpan.innerHTML = "jQuery('" + selector + "');";
 
-            // 拷贝结果
+            // Show the copy result.
             toCopy && copyToClipboard(_debug);
 
             // 要先拷贝后再提示(由于提示时会隐藏结果标签，复制不成功)
-            toWarn && warn(toWarn, 1500);
+            toWarn && warn(toWarn, 1000);
 
             inspectEval("document.querySelectorAll('" + selector + "').length", function (res, ex) {
 
                 if (ex) {
-                    // numSpan.innerHTML = "长度计算出错!";
                     inspectEval("jQuery('" + selector + "').length", function (r, e) {
                         if (e) {
                             if (!selector || !selector.trim()) {
                                 numSpan.innerHTML = "0";
                             } else {
-                                numSpan.innerHTML = "长度计算出错!";
+                                numSpan.innerHTML = getI18nMsg("elements_length_wrong");
                             }
                         } else {
                             numSpan.innerHTML = r;
@@ -337,7 +336,7 @@ function setResult(selector, toCopy) {
 }
 
 /**
- * span {tagName, tagId, tagClass} click event handler
+ * Span {tagName, tagId, tagClass} click event handler
  */
 function pieceListener(event) {
     if (event['which'] == 1) {
@@ -356,7 +355,7 @@ function pieceListener(event) {
 
         setResult(selectorGlobal, false);
     } else if (event['which'] == 3) {
-        // 拷贝 span 的值 (tagName , tagId, tagClass)
+        // Copy span's value (tagName , tagId, tagClass).
         var
             me = this,
             msg = '',
@@ -365,9 +364,9 @@ function pieceListener(event) {
             range.selectNode(me);
             window.getSelection().removeAllRanges();
             window.getSelection().addRange(range);
-            msg = document.execCommand("copy") ? "拷贝成功!" : "拷贝失败!";
+            msg = document.execCommand("copy") ? getI18nMsg("copy_success") : getI18nMsg("copy_failed");
         } catch (err) {
-            msg = "拷贝失败，该chrome版本不支持此操作!";
+            msg = getI18nMsg("copy_failed_exception");
         } finally {
             window.getSelection().removeAllRanges();
         }
@@ -376,7 +375,7 @@ function pieceListener(event) {
 }
 
 /**
- * turn model into selector
+ * Turn model into selector
  * @returns {string}
  */
 function modelToSelector() {
@@ -390,11 +389,11 @@ function modelToSelector() {
     for (var i = 0; i < modelArrGlobal.length; i++) {
 
         var
-            sibling = "", // 相邻元素
+            isChild = "", //
             subSelector = "",
             model = modelArrGlobal[i],
             modelItem = model[0], // model[0]: [tagName-object,id-object,class-object,class-object,...]
-            attrs = model[1],// tag的属性
+            attrs = model[1],// attributes
             numStartClass = false;
 
         for (var j = 0; j < modelItem.length; j++) {
@@ -405,14 +404,14 @@ function modelToSelector() {
                     numStartClass = true;
                 }
 
-                // id中是否有数字
+                // Id whether to contain digital.
                 if (itemObject['value'].startsWith("#") && /\d/.test(itemObject['value'])) {
                     subSelector = subSelector + '[id="' + itemObject['value'].replace("#", '') + '"]';
                 } else {
                     subSelector = subSelector + itemObject['value'];
                 }
-                // 相邻元素
-                sibling = ((indexCache + 1) == i) ? " > " : " ";
+                //
+                isChild = ((indexCache + 1) == i) ? " > " : " ";
             }
         }
 
@@ -433,8 +432,8 @@ function modelToSelector() {
             }
 
             if (!subSelector && attrStr) {
-                // 相邻元素
-                sibling = ((indexCache + 1) == i) ? " > " : " ";
+                //
+                isChild = ((indexCache + 1) == i) ? " > " : " ";
             }
         }
 
@@ -443,16 +442,16 @@ function modelToSelector() {
             subSelector = subSelector + attrStr;
 
             if (indexCache != -1) {
-                selector = selector + sibling + subSelector;
+                selector = selector + isChild + subSelector;
             } else {
                 selector = subSelector;
             }
             indexCache = i;
         } else {
 
-            if (sibling) {
+            if (isChild) {
                 if (indexCache != -1) {
-                    selector = selector + sibling + attrStr;
+                    selector = selector + isChild + attrStr;
                 } else {
                     selector = attrStr;
                 }
@@ -652,7 +651,6 @@ function copySelectorToClip() {
 /**
  * TODO
  * 标记所有的可点击链接
- * 判断是否有jq，没有则提示要求注入
  * cursor:pointer + a[href]
  * visible:true
  * 对于overflow:hidden的(例如焦点图)查找其container
@@ -706,9 +704,9 @@ function calc() {
     destroyInput();
 
     window['_history'] = window['_history'] || [];
-    window['_h_index'] = window['_h_index'] || 0; // 历史记录的当前序号
-    window['_s_index'] = -1; // 被编辑选择器选中元素定位用的当前序号
-    window['_s_length'] = -1; // 被编辑选择器选中元素定位用的当前序号
+    window['_h_index'] = window['_h_index'] || 0; // Current index in history array.
+    window['_s_index'] = -1; //
+    window['_s_length'] = -1; //
 
     /**
      * Create the toolbar which belongs to the calculator panel.
@@ -717,36 +715,37 @@ function calc() {
     var
         input = tag("textarea", "calc-editor",
             {
-                title: '使用 alt + up/down 可查看历史记录',
+                title: getI18nMsg("calc_tips_alt_upOrDown"),
                 style: "width: 418px;" + " font-size: 12px; font-family: monospace; border: 1px solid silver"
             }
         ),
 
-        iSearch = tag("i", ['fa', 'fa-search'], {title: '搜索 ( 左单击空白处 )'}),
-        iLeft = tag("i", ['fa', 'fa-caret-left'], {title: '查询结果中的上一个元素'}),
-        iRight = tag("i", ['fa', 'fa-caret-right'], {title: "查询结果中的下一个元素"}),
+        iSearch = tag("i", ['fa', 'fa-search'], {title: getI18nMsg("calc_tips_search")}),
+        iLeft = tag("i", ['fa', 'fa-caret-left'], {title: getI18nMsg("calc_tips_prev_element")}),
+        iRight = tag("i", ['fa', 'fa-caret-right'], {title: getI18nMsg("calc_tips_next_element")}),
 
-        iExecute = tag("i", ['fa', 'fa-play'], {title: '执行表达式 ( 右单击空白处 )'}),
-        iUp = tag("i", ['fa', 'fa-caret-up'], {title: '上一个历史记录'}),
-        iDown = tag("i", ['fa', 'fa-caret-down'], {title: "下一个历史记录"}),
+        iExecute = tag("i", ['fa', 'fa-play'], {title: getI18nMsg("calc_tips_eval_expression")}),
+        iUp = tag("i", ['fa', 'fa-caret-up'], {title: getI18nMsg("calc_tips_prev_history")}),
+        iDown = tag("i", ['fa', 'fa-caret-down'], {title: getI18nMsg("calc_tips_next_history")}),
 
         str = selector.innerText.trim(),
 
         selector_holder = input.value;
 
-    input.value = (str != "无" && str != "") ? str : history() ? history() : "";
+    input.value =
+        (str != getI18nMsg("label_jQuery_expression_default") && str != "") ? str : history() ? history() : "";
 
-    // 此次编辑的Selector存入history
+    // Store the expression.
     history(null, input.value);
 
     input.addEventListener("keydown", function (event) {
         var _alt = event['altKey'];
 
         switch (event["keyCode"]) {
-            case 38: // 前一次查询记录
+            case 38: // Last expression
                 _alt && (input.value = history(current(-1)));
                 break;
-            case 40: // 后一次查询记录
+            case 40: // Next expression
                 _alt && (input.value = history(current(1)));
                 break;
             default:
@@ -766,7 +765,7 @@ function calc() {
         selector_holder = input.value;
     });
 
-    // 查询
+    // search
     iSearch.addEventListener("mouseup", function () {
         goSearch.bind(input);
 
@@ -778,32 +777,32 @@ function calc() {
 
         event.stopPropagation();
     });
-    // 查询结果中的上一个元素
+    // Show the prev tag in the result.
     iLeft.addEventListener("mouseup", function () {
         input.value && go(-1);
 
         event.stopPropagation();
     });
-    // 查询结果中的下一个元素
+    // Show the next tag in the result.
     iRight.addEventListener("mouseup", function () {
         input.value && go(1);
 
         event.stopPropagation();
     });
 
-    // 执行
+    // Execute the expression.
     iExecute.addEventListener("mouseup", function () {
         execute(input.value);
 
         event.stopPropagation();
     });
-    // 上一个历史记录
+    // The prev expression in the history.
     iUp.addEventListener("mouseup", function () {
         input.value = history(current(-1));
 
         event.stopPropagation();
     });
-    // 下一个历史记录
+    // The next expression in the history.
     iDown.addEventListener("mouseup", function () {
         input.value = history(current(1));
 
@@ -812,7 +811,7 @@ function calc() {
 
     me.appendChild(input);
 
-    // 调整页面
+    //
     resize();
 
     me.appendChild(tag("br"));
@@ -833,7 +832,7 @@ function calc() {
     input.focus();
 
     /**
-     * 创建标签
+     * Create the dom-like item.
      * @param name
      * @param clazz
      * @param attrs
@@ -860,7 +859,7 @@ function calc() {
     }
 
     /**
-     * 标记上一个/下一个元素
+     * Show the prev/next tag in the result.
      * @param flag
      */
     function go(flag) {
@@ -875,35 +874,34 @@ function calc() {
             }
         }
 
-        inspectEval(getTagLeft
-            + getTagTop
-            + _scrollToTag
-            + " (" + _scrollToTag + ")(" + window['_s_index'] + ");",
+        inspectEval(" (" + _scrollToTag + ")(" + window['_s_index'] + ");",
             function (result, isException) {
                 if (isException) {
-                    warn("选择器错误或者页面不支持jQuery！");
+                    warn(getI18nMsg('calc_tips_wrong_expression'));
                 }
             }
         );
 
         function _scrollToTag(index) {
-
-            // var tag = window['jQuery'] ? jQuery(selector)[index] : document.querySelectorAll(selector)[index];
-
+            if (!$tag) {
+                return null;
+            }
             var cover = document.getElementsByClassName("-slct");
             for (var i = 0; i < cover.length; i++) {
                 if (i == index) {
-                    cover[i].style.backgroundColor = "green";
-                    window.scrollTo(getTagLeft(cover[i]), getTagTop(cover[i]));
+                    // cover[i].style.backgroundColor = "green";
+                    cover[i].style.opacity = "1";
+                    var xy = $tag.getXY(cover[i]);
+                    window.scrollTo(xy.x, xy.y);
                 } else {
-                    cover[i].style.backgroundColor = "rgb(255, 0, 0)";
+                    cover[i].style.opacity = "0.7";
                 }
             }
         }
     }
 
     /**
-     * 标记所有当前选择器能查找到的元素
+     * Execute the current expression.(Search)
      * @returns {number}
      */
     function goSearch(callback, toWarn) {
@@ -914,42 +912,47 @@ function calc() {
         window['_s_index'] = -1;
         window['_s_length'] = 0;
 
-        inspectEval(getTagLeft
-            + getTagTop
-            + coverToEle
-            + " (" + _searchAll + ")(" + input.value.replace(/\;$/, "") + ")",
-            function (result, isException) {
-                if (isException) {
-                    warn("该页面不支持jQuery或者表达式错误！");
-                } else {
-                    history(null, input.value);
-                    document.querySelector(".selector-num").innerHTML = window['_s_length'] = Number.parseInt(result);
+        inspectEval("jQuery.fn.jquery", function (result, isException) {
+            if (!isException) {
+                inspectEval(" (" + _searchAll + ")(" + input.value.replace(/\;$/, "") + ")",
+                    function (result, isException) {
+                        if (isException) {
+                            warn(getI18nMsg("calc_tips_wrong_expression"));
+                        } else {
+                            history(null, input.value);
+                            document.querySelector(".selector-num").innerHTML =
+                                window['_s_length'] = Number.parseInt(result);
 
-                    if (typeof callback == "function") {
-                        callback(window['_s_length']);
+                            if (typeof callback == "function") {
+                                callback(window['_s_length']);
+                            }
+                            toWarn != false && warn(getI18nMsg("calc_tips_search_success"), 300);
+                            go();
+                        }
                     }
-                    toWarn != false && warn("搜索成功！", 300);
-                    go();
-                }
+                );
+            } else {
+                warn(getI18nMsg("tips_no_jq"), 1000);
             }
-        );
+        });
 
         function _searchAll(tags) {
             tags = jQuery(tags);
-            for (var i = 0; i < tags.length; i++) {
-                if (i == 0) {
-                    coverToEle(tags[i], true, 0);
-                } else {
-                    coverToEle(tags[i], false, i);
-                }
-            }
 
+            if (!$tag) {
+                new Tag(tags[i], {
+                    mark: false, // markLine
+                    autoLocate: false,
+                    clear: true
+                });
+            }
+            $tag.cover(tags, true, true);
             return tags.length;
         }
     }
 
     /**
-     * 执行输入的表达式
+     * Execute the expression.
      * @param expr
      * @param msg
      * @returns {null}
@@ -963,14 +966,14 @@ function calc() {
             if (!exception) {
                 inspectEval("(function(){" + expr + "; return null;})();", function (res, isEx) {
                     if (isEx) {
-                        warn("表达式有错误！", 500);
+                        warn(getI18nMsg("calc_tips_wrong_expression"), 500);
                     } else {
                         history(null, input.value);
-                        warn(msg || "执行成功！", 300);
+                        warn(msg || getI18nMsg("calc_tips_execute_success"), 300);
                     }
                 });
             } else {
-                warn("该页面不支持jQuery或者表达式错误！");
+                warn(getI18nMsg("tips_no_jq"));
             }
         })
     }
@@ -1314,7 +1317,7 @@ function calc() {
         area.appendChild(btn);
         evalOperator();
 
-        execute(input.value, me.innerText + " 已触发！");
+        execute(input.value, getI18nMsg("calc_tips_event_triggered", me.innerText));
 
         event.stopPropagation();
     }

@@ -146,15 +146,15 @@ Tag.prototype = {
         imgXY = this.getXY(img);
 
         switch (tag.shape) {
-            case 'circle': // 圆形
+            case 'circle': // circle area
                 xy.y = imgXY.y + parseInt(coords[1]) - parseInt(coords[2]);
                 xy.x = imgXY.x + parseInt(coords[0]) - parseInt(coords[2]);
                 break;
             case 'poly':
                 break;
-            case 'rect' : // 矩形
+            case 'rect' : // rectangle area
             // break;
-            default: // 矩形
+            default: // rectangle area
                 xy.y = imgXY.y + parseInt(coords[1]);
                 xy.x = imgXY.x + parseInt(coords[0]);
                 break;
@@ -263,7 +263,7 @@ Tag.prototype = {
         }
 
         switch (tag.shape) {
-            case 'circle': // 圆形
+            case 'circle': // circle area
                 // http://www.haieruplus.com/cn/index.php?m=index&mz_ca=2021995&mz_sp=70mrf&mz_sb=1
                 div.style.height = coords[2] * 2 + "px";
                 div.style.width = coords[2] * 2 + "px";
@@ -278,9 +278,9 @@ Tag.prototype = {
             case 'poly':
                 // https://zrzb.tmall.hk/shop/view_shop.htm?spm=a220m.1000862.1000730.3.qxBvB5&user_number_id=2130139739&rn=cd9d6c07f9e1e0e77473d8fc20b19c72
                 break;
-            case 'rect' : // 矩形
+            case 'rect' : // rectangle area
             // break;
-            default: // 矩形
+            default: // rectangle area
                 div.style.height = coords[3] - coords[1] + "px";
                 div.style.width = coords[2] - coords[0] + "px";
 
@@ -485,7 +485,7 @@ Tag.prototype = {
                     break;
             }
         }
-        return selector.trimRight ? selector.trimRight(): selector.trim();
+        return selector.trimRight ? selector.trimRight() : selector.trim();
     },
     siftModelSelector: function (model, lastSelector) {
 
@@ -574,7 +574,7 @@ Tag.prototype = {
         return model;
     },
     /**
-     *  筛选class
+     *  Filter suitable class.
      */
     siftClass: function (classList) {
 
@@ -589,14 +589,14 @@ Tag.prototype = {
         var result = '';
         var miniNum = 0;
         var classGroup = this.groupClass(list);
-        // 计算每个class组合能查出的元素数，并进行比较
+        // Compare the elements length which can be searched by every group of class.
         for (var j = 0; j < classGroup.length; j++) {
             var item = classGroup[j];
             if (/\.\d/.test(item)) {
                 item = '[class="' + item.split(".").join(' ').trim() + '"]';
             }
             var num = document.querySelectorAll(item).length;
-            if (num == 1) { // 当前class只能查出一个
+            if (num == 1) { // This means that only one element has this class.
                 result = item;
                 break;
             } else {
@@ -614,7 +614,7 @@ Tag.prototype = {
         return result;
     },
     /**
-     * 列出所有可能的class的组合(不排列)
+     * List all possible combinations of class (not arranged).
      */
     groupClass: function (listA, listB, result) {
 

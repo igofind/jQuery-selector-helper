@@ -2,6 +2,9 @@
     "label_elements_length": {
         "message": "元素数"
     },
+    "elements_length_wrong": {
+        "message": "长度计算错误！"
+    },
     "label_jQuery_expression": {
         "message": "表达式"
     },
@@ -58,16 +61,16 @@
     "tips_exist_jq": {
         "message": "jQuery (v$VERSION$) 已存在！",
         "placeholders": {
-            "version" : {
-                "content" : "$1"
+            "version": {
+                "content": "$1"
             }
         }
     },
     "tips_inject_jq_success": {
         "message": "jQuery (v$VERSION$) 注入成功！",
         "placeholders": {
-            "version" : {
-                "content" : "$1"
+            "version": {
+                "content": "$1"
             }
         }
     },
@@ -80,6 +83,41 @@
 
     //    Tips for the calculator panel
     "calc_tips_alt_upOrDown": {
-        "message": ""
+        "message": "使用 alt + up/down 可查看历史记录"
+    },
+    "calc_tips_search": {
+        "message": "搜索 ( 左单击空白处 )"
+    },
+    "calc_tips_prev_element": {
+        "message": "查询结果中的上一个元素"
+    },
+    "calc_tips_next_element": {
+        "message": "查询结果中的下一个元素"
+    },
+    "calc_tips_eval_expression": {
+        "message": "执行表达式 ( 右单击空白处 )"
+    },
+    "calc_tips_prev_history": {
+        "message": "上一个历史记录"
+    },
+    "calc_tips_next_history": {
+        "message": "下一个历史记录"
+    },
+    "calc_tips_wrong_expression": {
+        "message": "表达式错误！"
+    },
+    "calc_tips_search_success": {
+        "message": "搜索成功！"
+    },
+    "calc_tips_execute_success": {
+        "message": "执行成功！"
+    },
+    "calc_tips_event_triggered": {
+        "message": "$EVENTNAME$ 已触发！",
+        "placeholders": {
+            "eventname": {
+                "content": "$1"
+            }
+        }
     }
 }

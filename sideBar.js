@@ -6,7 +6,9 @@ var
         mark: true,
         autoLocate: false,
         clear: true,
+        opacity: 0.6,
         color: 'red',
+        // color: '#4d90fe',
         debug: _debug,
         toStr: function () {
             var str = "{";
@@ -874,7 +876,7 @@ function calc() {
             }
         }
 
-        inspectEval(" (" + _scrollToTag + ")(" + window['_s_index'] + ");",
+        inspectEval(_scrollToTag + "; _scrollToTag(" + window['_s_index'] + ", " + config.opacity + ");",
             function (result, isException) {
                 if (isException) {
                     warn(getI18nMsg('calc_tips_wrong_expression'));
@@ -882,7 +884,7 @@ function calc() {
             }
         );
 
-        function _scrollToTag(index) {
+        function _scrollToTag(index, opacity) {
             if (!$tag) {
                 return null;
             }
@@ -894,7 +896,7 @@ function calc() {
                     var xy = $tag.getXY(cover[i]);
                     window.scrollTo(xy.x, xy.y);
                 } else {
-                    cover[i].style.opacity = "0.7";
+                    cover[i].style.opacity = opacity;
                 }
             }
         }

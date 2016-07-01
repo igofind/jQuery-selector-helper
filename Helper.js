@@ -13,6 +13,7 @@ var Tag = function (tag, config) {
     this.mark = config['mark'] || true;
     this.autoLocate = config['autoLocate'] || false;
     this.clear = config['clear'] || true;
+    this.opacity = config['opacity'] || 0.6;
     this.color = config['color'] || 'red';
 
     this.debug = config['debug'] || false;
@@ -212,7 +213,7 @@ Tag.prototype = {
         div.style.zIndex = "999999999999";
         div.style.backgroundColor = this.color;
         border && (div.style.border = '1px solid white');
-        div.style.opacity = 0.7;
+        div.style.opacity = this.opacity;
         div.style.textAlign = 'left';
         div.style.overflow = 'hidden';
 

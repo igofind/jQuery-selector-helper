@@ -1,4 +1,7 @@
 {
+    "extension_desc" : {
+        "message": "本插件所有功能都集中在devTools开发者工具中，请打开 DevTools > Elements > Selector (侧边窗格) 后使用！"
+    },
     "label_elements_length": {
         "message": "元素数"
     },

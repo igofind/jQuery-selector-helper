@@ -1,4 +1,7 @@
 {
+    "extension_desc" : {
+        "message": "The plug all functions are concentrated in the developer tools. Please open : DevTools> Elements> Selector(The side pane)."
+    },
     "label_elements_length": {
         "message": "Length"
     },

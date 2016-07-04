@@ -60,7 +60,11 @@ function injectTag() {
     //
     inspectEval("typeof Tag", function (result) {
         if (result == 'undefined') {
-            inspectEval("Tag = null; " + Tag.toStr());
+            inspectEval("Tag = null; " + Tag.toStr(), function (result, isException) {
+                if(!isException){
+                    _debug && console.debug("Inject the Tag object into current page.");
+                }
+            });
         }
     });
 }
@@ -940,8 +944,8 @@ function calc() {
         function _searchAll(tags) {
             tags = jQuery(tags);
 
-            if (!$tag) {
-                new Tag(tags[i], {
+            if (!window['$tag']) {
+                new Tag(tags[0], {
                     mark: false, // markLine
                     autoLocate: false,
                     clear: true
@@ -965,9 +969,10 @@ function calc() {
 
         inspectEval('jQuery.fn.jquery', function (result, exception) {
             if (!exception) {
-                inspectEval("(function(){" + expr + "; return null;})();", function (res, isEx) {
+                inspectEval("(" + expr + ")", function (res, isEx) {
                     if (isEx) {
                         warn(getI18nMsg("calc_tips_wrong_expression"), 500);
+                        _debug && console.debug(isEx);
                     } else {
                         history(null, input.value);
                         warn(msg || getI18nMsg("calc_tips_execute_success"), 300);

@@ -232,10 +232,10 @@ Tag.prototype = {
 
             if (index != null) {
                 div.title = "[" + index + "] " + tag.nodeName + _tips;
-                div.appendChild(this.tip4Cover("[" + index + "] " + tag.nodeName));
+                div.appendChild(this.tip4Cover("[" + index + "] " + tag.nodeName, tag.getBoundingClientRect().width));
             } else {
                 div.title = tag.nodeName + _tips;
-                div.appendChild(this.tip4Cover(tag.nodeName));
+                div.appendChild(this.tip4Cover(div.title, tag.getBoundingClientRect().width));
             }
         }
         return [div];
@@ -248,7 +248,7 @@ Tag.prototype = {
 
         var
             coords, map, img, tipText, locateTip, imgXY,
-            tipSpan = this.tip4Cover();
+            tipSpan = this.tip4Cover("", 2);
 
         coords = tag.coords.split(',');
         map = tag.parentElement;
@@ -316,7 +316,7 @@ Tag.prototype = {
         }
         return divs;
     },
-    tip4Cover: function (text) {
+    tip4Cover: function (text, paddingLeft) {
 
         this.debug && console.log('tip4Cover() invoked, arguments: ', arguments);
 
@@ -324,7 +324,7 @@ Tag.prototype = {
         span.style.display = "inline-block";
         span.style.lineHeight = "14px";
         span.style.textAlign = "left";
-        span.style.paddingLeft = "10%";
+        span.style.paddingLeft = paddingLeft == undefined ? "2px" : paddingLeft <= 150 ? paddingLeft + "px" : "10%";
         span.style.width = "100%";
         span.style.whiteSpace = "nowrap";
         span.style.overflow = 'hidden';

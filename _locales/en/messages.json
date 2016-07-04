@@ -113,7 +113,7 @@
         "message": "Execute success!"
     },
     "calc_tips_event_triggered": {
-        "message": "$EVENTNAME$ event triggered success！",
+        "message": "$EVENTNAME$ event triggered successful!",
         "placeholders": {
             "eventname": {
                 "content": "$1"

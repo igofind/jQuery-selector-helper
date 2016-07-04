@@ -196,11 +196,11 @@ function createPiece(item, spanIndex, modelIndex, modelArrIndex) {
         span = document.createElement("span");
     span.setAttribute("title", str);
 
-    if (str.startsWith(".")) { // class
+    if (str.indexOf(".") == 0) { // class
         clazz = "tagClass";
-    } else if (str.startsWith("#")) { // id
+    } else if (str.indexOf("#") == 0) { // id
         clazz = "tagId";
-    } else if (str.startsWith("[")) { // attribute
+    } else if (str.indexOf("[") == 0) { // attribute
         clazz = "tagAttr";
     } else { // tag name
         clazz = "tagName";
@@ -407,7 +407,7 @@ function modelToSelector() {
                 }
 
                 // Id whether to contain digital.
-                if (itemObject['value'].startsWith("#") && /\d/.test(itemObject['value'])) {
+                if (itemObject['value'].indexOf("#") == 0 && /\d/.test(itemObject['value'])) {
                     subSelector = subSelector + '[id="' + itemObject['value'].replace("#", '') + '"]';
                 } else {
                     subSelector = subSelector + itemObject['value'];
@@ -730,13 +730,12 @@ function calc() {
         iUp = tag("i", ['fa', 'fa-caret-up'], {title: getI18nMsg("calc_tips_prev_history")}),
         iDown = tag("i", ['fa', 'fa-caret-down'], {title: getI18nMsg("calc_tips_next_history")}),
 
-        str = selector.innerText.trim(),
-
-        selector_holder = input.value;
+        str = selector.innerText.trim();
 
     input.value =
         (str != getI18nMsg("label_jQuery_expression_default") && str != "") ? str : history() ? history() : "";
 
+        selector_holder = input.value;
     // Store the expression.
     history(null, input.value);
 
@@ -1618,7 +1617,9 @@ function calc() {
         for (var i = 0; i < operators.length; i++) {
             var
                 singleQuoteStr = "')",
+                singleQuoteRegex = /'\)$/,
                 doubleQuoteStr = '")',
+                doubleQuoteRegex = /"\)$/,
                 tag = operators[i],
                 posit = tag.dataset['posit'],
                 value = tag.innerText;
@@ -1626,11 +1627,11 @@ function calc() {
             if (!posit || posit == 'outer') {
                 selector = selector + value;
             } else {
-                if (selector.endsWith(singleQuoteStr)) {
-                    selector = selector.replace(singleQuoteStr, value + singleQuoteStr);
+                if (selector.lastIndexOf(singleQuoteStr) == (selector.length - 2)) {
+                    selector = selector.replace(singleQuoteRegex, value + singleQuoteStr);
 
-                } else if (selector.endsWith(doubleQuoteStr)) {
-                    selector = selector.replace(doubleQuoteStr, value + doubleQuoteStr);
+                } else if (selector.lastIndexOf(doubleQuoteStr) == (selector.length - 2)) {
+                    selector = selector.replace(doubleQuoteRegex, value + doubleQuoteStr);
                 } else {
                     selector = selector.replace(/\)$/, value + ")");
                 }

@@ -3,7 +3,7 @@
         "message": "元素数"
     },
     "elements_length_wrong": {
-        "message": "长度计算错误！"
+        "message": "长度计算错误!"
     },
     "label_jQuery_expression": {
         "message": "表达式"
@@ -27,13 +27,13 @@
     },
 
     "toolbar_tips_clear": {
-        "message": "清除(所有)标记"
+        "message": "清除所有标记"
     },
     "clear_success": {
-        "message": "清除成功！"
+        "message": "清除成功!"
     },
     "clear_failed": {
-        "message": "清除失败！"
+        "message": "清除失败!"
     },
 
     "toolbar_tips_copy": {
@@ -43,23 +43,23 @@
         "message": "点击此处只拷贝选择器"
     },
     "copy_success": {
-        "message": "拷贝成功！"
+        "message": "拷贝成功!"
     },
     "copy_failed": {
-        "message": "拷贝失败！"
+        "message": "拷贝失败!"
     },
     "copy_failed_exception": {
-        "message": "拷贝失败！当前浏览器版本不支持此操作！"
+        "message": "拷贝失败!当前浏览器版本不支持此操作!"
     },
 
     "toolbar_tips_jq": {
         "message": "向当前页面中注入jQuery"
     },
     "tips_no_jq": {
-        "message": "当前页面中没有jQuery对象！"
+        "message": "当前页面中没有没有引入jQuery!"
     },
     "tips_exist_jq": {
-        "message": "jQuery (v$VERSION$) 已存在！",
+        "message": "jQuery (v$VERSION$) 已存在!",
         "placeholders": {
             "version": {
                 "content": "$1"
@@ -67,7 +67,7 @@
         }
     },
     "tips_inject_jq_success": {
-        "message": "jQuery (v$VERSION$) 注入成功！",
+        "message": "jQuery (v$VERSION$) 注入成功!",
         "placeholders": {
             "version": {
                 "content": "$1"
@@ -78,7 +78,7 @@
         "message": "Injected failure!"
     },
     "tips_can_not_inject_jq": {
-        "message": "当前页面中无法注入jQuery！"
+        "message": "当前页面中无法注入jQuery!"
     },
 
     //    Tips for the calculator panel
@@ -104,16 +104,16 @@
         "message": "下一个历史记录"
     },
     "calc_tips_wrong_expression": {
-        "message": "表达式错误！"
+        "message": "表达式错误!"
     },
     "calc_tips_search_success": {
-        "message": "搜索成功！"
+        "message": "搜索成功!"
     },
     "calc_tips_execute_success": {
-        "message": "执行成功！"
+        "message": "执行成功!"
     },
     "calc_tips_event_triggered": {
-        "message": "$EVENTNAME$ 已触发！",
+        "message": "$EVENTNAME$ 已触发!",
         "placeholders": {
             "eventname": {
                 "content": "$1"

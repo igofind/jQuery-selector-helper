@@ -969,7 +969,7 @@ function calc() {
 
         inspectEval('jQuery.fn.jquery', function (result, exception) {
             if (!exception) {
-                inspectEval("(" + expr + ")", function (res, isEx) {
+                inspectEval(expr + "; 1==1", function (res, isEx) {
                     if (isEx) {
                         warn(getI18nMsg("calc_tips_wrong_expression"), 500);
                         _debug && console.debug(isEx);
@@ -1000,7 +1000,7 @@ function calc() {
             }
             return "";
         } else if (item) {
-            if (!_history.includes(item)) {
+            if (_history.indexOf(item) == -1) {
                 _history[_history.length] = item;
                 window['_history'] = _history;
             }

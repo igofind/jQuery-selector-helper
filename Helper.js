@@ -325,7 +325,7 @@ Tag.prototype = {
         span.style.lineHeight = "14px";
         span.style.fontSize = "12px";
         span.style.textAlign = "left";
-        span.style.paddingLeft = paddingLeft == undefined ? "2px" : paddingLeft <= 150 ? "3px" : "10%";
+        span.style.paddingLeft = paddingLeft == undefined ? "2px" : paddingLeft <= 180 ? "3px" : "10%";
         span.style.width = "100%";
         span.style.whiteSpace = "nowrap";
         span.style.overflow = 'hidden';

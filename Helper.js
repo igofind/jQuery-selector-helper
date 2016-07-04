@@ -406,11 +406,11 @@ Tag.prototype = {
 
         var modelItem = [], item = [], item_attr = [];
         // name
-        item.push(this.createModeItem('name', info.name));
+        item.push(this.createModeItem('tagName', info.name));
         // id
-        item.push(this.createModeItem('id', info.id));
+        item.push(this.createModeItem('tagId', info.id));
         // class
-        item = item.concat(this.createModeItem('class', info.class));
+        item = item.concat(this.createModeItem('tagClass', info.class));
 
         modelItem[0] = item;
 
@@ -438,13 +438,13 @@ Tag.prototype = {
             isClass = false;
 
         switch (type) {
-            case "name": // tag name
+            case "tagName": // tag name
                 value && (item = value);
                 break;
-            case "id": // tag id
+            case "tagId": // tag id
                 value && (item = "#" + value);
                 break;
-            case "class": // tag class
+            case "tagClass": // tag class
                 isClass = true;
                 for (var i = 0; i < value.length; i++) {
                     var _item = {

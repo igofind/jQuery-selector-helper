@@ -1,7 +1,7 @@
 # jQuery-Selector-Helper
 #### If you use jQuery and frequently look for css selector in the web page.This tool can help you save your time.
 
-## Where it is ?
+## Where is it ?
 **Please open: DevTools > Elements > Selector (the side pane).**
 
 ![viewport](http://igofind.github.io/lib/images/chrome-extension/jQuerySelectorHelper/viewport.jpg)

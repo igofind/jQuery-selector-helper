@@ -28,7 +28,7 @@
 - #### Mark ( Create some cover layer to mark the target. ) & Clear ( Clear all cover layers. )
 ![Mark & Clear](http://igofind.github.io/lib/images/chrome-extension/jQuerySelectorHelper/mark&clear.gif)
 
-- #### Copy ( Scroll the selected-tag into view. )
+- #### Copy ( Copy expression into clipboard. )
 ![Copy](http://igofind.github.io/lib/images/chrome-extension/jQuerySelectorHelper/copy.gif)
 
 - #### Inject jQuery object into the current page.

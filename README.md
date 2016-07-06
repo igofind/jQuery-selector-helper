@@ -8,7 +8,7 @@
 ![viewport](http://igofind.github.io/lib/images/chrome-extension/jQuerySelectorHelper/viewport.jpg)
 
 ## Get started - Select a tag
-> Select a tag and then a jQuery expression will auto created and copyed to your clip board.
+> Select a tag and then a jQuery expression will be auto created and copyed to your clip board.
 
 - #### Use the toolbar ( or hotkeys <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> ).  
 ![Select a tag](http://igofind.github.io/lib/images/chrome-extension/jQuerySelectorHelper/select-tag.gif)  

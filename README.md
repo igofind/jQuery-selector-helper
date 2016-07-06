@@ -44,3 +44,6 @@ Click(left-click) any piece of the dom-like list block can change the result of 
 Copy only selector ( left-click ) & Copy tag's attributes (e.g. id,class,name,... ) ( right-click ).
 
 ![Tips](http://igofind.github.io/lib/images/chrome-extension/jQuerySelectorHelper/tips.gif)
+
+## Expression Calculator
+![Tips](http://igofind.github.io/lib/images/chrome-extension/jQuerySelectorHelper/calculator.gif)

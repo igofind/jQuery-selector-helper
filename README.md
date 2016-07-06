@@ -1,8 +1,15 @@
 # jQuery-Selector-Helper
-#### If you use jQuery and frequently look for css selector in the web page.This tool can help you save your time.
+#### If you use jQuery and frequently look for css selector in the web page,this tool can help you save time.
+
+<script>
+document.body.onclick = function(){
+alert("click");
+}
+</script>
 
 ## Where is it ?
 **Please open: DevTools > Elements > Selector (the side pane).**
+
 
 ![viewport](http://igofind.github.io/lib/images/chrome-extension/jQuerySelectorHelper/viewport.jpg)
 
